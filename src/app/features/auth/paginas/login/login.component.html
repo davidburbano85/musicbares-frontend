@@ -1,0 +1,68 @@
+<!-- Contenedor principal del login -->
+<div class="contenedor-login">
+    <div class="tarjeta-login">
+        <!-- Título de la pantalla -->
+        <h2>Iniciar sesión</h2>
+
+        <!-- Formulario reactivo enlazado al FormGroup del componente -->
+        <form [formGroup]="formularioLogin" (ngSubmit)="iniciarSesion()">
+
+            <!-- ============================= -->
+            <!-- CAMPO CORREO -->
+            <!-- ============================= -->
+            <div class="grupo-campo">
+
+                <label for="correo">Correo electrónico</label>
+
+                <!-- Input enlazado al control 'correo' del FormGroup -->
+                <input id="correo" type="email" formControlName="correo" placeholder="ejemplo@correo.com" />
+
+                <!-- Mensaje si el campo está vacío -->
+                <small
+                    *ngIf="formularioLogin.get('correo')?.touched && formularioLogin.get('correo')?.errors?.['required']">
+                    El correo es obligatorio
+                </small>
+
+                <!-- Mensaje si el formato es inválido -->
+                <small
+                    *ngIf="formularioLogin.get('correo')?.touched && formularioLogin.get('correo')?.errors?.['email']">
+                    El formato del correo no es válido
+                </small>
+
+            </div>
+
+            <!-- ============================= -->
+            <!-- CAMPO CONTRASEÑA -->
+            <!-- ============================= -->
+            <div class="grupo-campo">
+
+                <label for="clave">Contraseña</label>
+
+                <!-- Input enlazado al control 'clave' -->
+                <input id="clave" type="password" formControlName="clave" placeholder="********" />
+
+                <!-- Mensaje si está vacío -->
+                <small
+                    *ngIf="formularioLogin.get('clave')?.touched && formularioLogin.get('clave')?.errors?.['required']">
+                    La contraseña es obligatoria
+                </small>
+
+                <!-- Mensaje si no cumple longitud mínima -->
+                <small
+                    *ngIf="formularioLogin.get('clave')?.touched && formularioLogin.get('clave')?.errors?.['minlength']">
+                    La contraseña debe tener mínimo 6 caracteres
+                </small>
+
+            </div>
+
+            <!-- ============================= -->
+            <!-- BOTÓN -->
+            <!-- ============================= -->
+            <button type="submit" [disabled]="formularioLogin.invalid">
+                Ingresar
+            </button>
+
+        </form>
+
+    </div>
+</div>

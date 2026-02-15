@@ -1,0 +1,29 @@
+<div class="contenedor-login">
+
+  <div class="tarjeta-login form-largo">
+
+    <h2>Crear cuenta</h2>
+
+    <form [formGroup]="formularioRegistro" (ngSubmit)="registrar()">
+
+      <input
+        type="email"
+        formControlName="correo"
+        placeholder="Correo"
+      />
+
+      <input
+        type="password"
+        formControlName="clave"
+        placeholder="Contraseña"
+      />
+
+      <button type="submit" [disabled]="formularioRegistro.invalid">
+        Registrarme
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
