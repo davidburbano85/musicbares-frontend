@@ -1,68 +1,72 @@
-<!-- Contenedor principal del login -->
-<div class="contenedor-login">
-    <div class="tarjeta-login">
-        <!-- Título de la pantalla -->
-        <h2>Iniciar sesión</h2>
+<!-- Contenedor general de la app (responsive y centrado) -->
+<div class="contenedor-app">
 
-        <!-- Formulario reactivo enlazado al FormGroup del componente -->
-        <form [formGroup]="formularioLogin" (ngSubmit)="iniciarSesion()">
+  <!-- Tarjeta reutilizable del sistema -->
+  <div class="tarjeta">
 
-            <!-- ============================= -->
-            <!-- CAMPO CORREO -->
-            <!-- ============================= -->
-            <div class="grupo-campo">
+    <!-- Título del login -->
+    <h2>Iniciar sesión</h2>
 
-                <label for="correo">Correo electrónico</label>
+    <!-- Formulario reactivo -->
+    <form [formGroup]="formularioLogin" (ngSubmit)="iniciarSesion()">
 
-                <!-- Input enlazado al control 'correo' del FormGroup -->
-                <input id="correo" type="email" formControlName="correo" placeholder="ejemplo@correo.com" />
+      <!-- Campo correo -->
+      <div class="grupo-campo">
 
-                <!-- Mensaje si el campo está vacío -->
-                <small
-                    *ngIf="formularioLogin.get('correo')?.touched && formularioLogin.get('correo')?.errors?.['required']">
-                    El correo es obligatorio
-                </small>
+        <!-- Etiqueta -->
+        <label for="correo">Correo electrónico</label>
 
-                <!-- Mensaje si el formato es inválido -->
-                <small
-                    *ngIf="formularioLogin.get('correo')?.touched && formularioLogin.get('correo')?.errors?.['email']">
-                    El formato del correo no es válido
-                </small>
+        <!-- Input enlazado al formulario -->
+        <input
+          id="correo"
+          type="email"
+          formControlName="correo"
+          placeholder="ejemplo@correo.com"
+        />
 
-            </div>
+        <!-- Error requerido -->
+        <small *ngIf="formularioLogin.get('correo')?.touched && formularioLogin.get('correo')?.errors?.['required']">
+          El correo es obligatorio
+        </small>
 
-            <!-- ============================= -->
-            <!-- CAMPO CONTRASEÑA -->
-            <!-- ============================= -->
-            <div class="grupo-campo">
+        <!-- Error formato -->
+        <small *ngIf="formularioLogin.get('correo')?.touched && formularioLogin.get('correo')?.errors?.['email']">
+          El formato del correo no es válido
+        </small>
 
-                <label for="clave">Contraseña</label>
+      </div>
 
-                <!-- Input enlazado al control 'clave' -->
-                <input id="clave" type="password" formControlName="clave" placeholder="********" />
+      <!-- Campo contraseña -->
+      <div class="grupo-campo">
 
-                <!-- Mensaje si está vacío -->
-                <small
-                    *ngIf="formularioLogin.get('clave')?.touched && formularioLogin.get('clave')?.errors?.['required']">
-                    La contraseña es obligatoria
-                </small>
+        <label for="clave">Contraseña</label>
 
-                <!-- Mensaje si no cumple longitud mínima -->
-                <small
-                    *ngIf="formularioLogin.get('clave')?.touched && formularioLogin.get('clave')?.errors?.['minlength']">
-                    La contraseña debe tener mínimo 6 caracteres
-                </small>
+        <input
+          id="clave"
+          type="password"
+          formControlName="clave"
+          placeholder="********"
+        />
 
-            </div>
+        <!-- Error requerido -->
+        <small *ngIf="formularioLogin.get('clave')?.touched && formularioLogin.get('clave')?.errors?.['required']">
+          La contraseña es obligatoria
+        </small>
 
-            <!-- ============================= -->
-            <!-- BOTÓN -->
-            <!-- ============================= -->
-            <button type="submit" [disabled]="formularioLogin.invalid">
-                Ingresar
-            </button>
+        <!-- Error longitud -->
+        <small *ngIf="formularioLogin.get('clave')?.touched && formularioLogin.get('clave')?.errors?.['minlength']">
+          Mínimo 6 caracteres
+        </small>
 
-        </form>
+      </div>
 
-    </div>
+      <!-- Botón enviar -->
+      <button type="submit" [disabled]="formularioLogin.invalid">
+        Ingresar
+      </button>
+
+    </form>
+
+  </div>
+
 </div>

@@ -1,79 +1,79 @@
-/* Contenedor principal que ocupa toda la pantalla */
-.panel-contenedor {
-  min-height: 100vh; /* asegura que cubra toda la altura del viewport */
-  padding: 20px; /* espacio interno para que no pegue a los bordes */
-  background: #f4f6f9; /* fondo neutro profesional */
-  display: flex; /* usamos flexbox para organizar contenido */
-  flex-direction: column; /* elementos en columna */
-  gap: 20px; /* separación entre header y contenido */
-}
+// /* Contenedor principal que ocupa toda la pantalla */
+// .panel-contenedor {
+//   min-height: 100vh; /* asegura que cubra toda la altura del viewport */
+//   padding: 20px; /* espacio interno para que no pegue a los bordes */
+//   background: #f4f6f9; /* fondo neutro profesional */
+//   display: flex; /* usamos flexbox para organizar contenido */
+//   flex-direction: column; /* elementos en columna */
+//   gap: 20px; /* separación entre header y contenido */
+// }
 
-/* Encabezado del panel */
-.panel-header {
-  background: white; /* fondo blanco tipo dashboard */
-  padding: 20px; /* espacio interno */
-  border-radius: 10px; /* bordes suaves */
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* sombra ligera profesional */
-}
+// /* Encabezado del panel */
+// .panel-header {
+//   background: white; /* fondo blanco tipo dashboard */
+//   padding: 20px; /* espacio interno */
+//   border-radius: 10px; /* bordes suaves */
+//   box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* sombra ligera profesional */
+// }
 
-/* Título principal */
-.panel-header h1 {
-  margin: 0; /* quitamos margen por defecto del navegador */
-  font-size: 28px; /* tamaño grande para PC */
-}
+// /* Título principal */
+// .panel-header h1 {
+//   margin: 0; /* quitamos margen por defecto del navegador */
+//   font-size: 28px; /* tamaño grande para PC */
+// }
 
-/* Subtítulo */
-.panel-header p {
-  margin-top: 5px; /* pequeño espacio bajo el título */
-  color: #666; /* color gris suave */
-}
+// /* Subtítulo */
+// .panel-header p {
+//   margin-top: 5px; /* pequeño espacio bajo el título */
+//   color: #666; /* color gris suave */
+// }
 
-/* Sección de contenido */
-.panel-contenido {
-  display: grid; /* grid permite layout flexible */
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas en escritorio */
-  gap: 20px; /* espacio entre tarjetas */
-}
+// /* Sección de contenido */
+// .panel-contenido {
+//   display: grid; /* grid permite layout flexible */
+//   grid-template-columns: repeat(3, 1fr); /* 3 columnas en escritorio */
+//   gap: 20px; /* espacio entre tarjetas */
+// }
 
-/* Tarjeta del panel */
-.tarjeta-panel {
-  background: white; /* fondo blanco */
-  padding: 20px; /* espacio interno */
-  border-radius: 10px; /* bordes redondeados */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* sombra suave */
-}
+// /* Tarjeta del panel */
+// .tarjeta-panel {
+//   background: white; /* fondo blanco */
+//   padding: 20px; /* espacio interno */
+//   border-radius: 10px; /* bordes redondeados */
+//   box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* sombra suave */
+// }
 
-/* ============================= */
-/* 📱 RESPONSIVE PARA TABLET */
-/* ============================= */
-@media (max-width: 1024px) {
-  .panel-contenido {
-    grid-template-columns: repeat(2, 1fr);
-    /* pasamos a 2 columnas en tablet */
-  }
+// /* ============================= */
+// /* 📱 RESPONSIVE PARA TABLET */
+// /* ============================= */
+// @media (max-width: 1024px) {
+//   .panel-contenido {
+//     grid-template-columns: repeat(2, 1fr);
+//     /* pasamos a 2 columnas en tablet */
+//   }
 
-  .panel-header h1 {
-    font-size: 24px;
-    /* reducimos tamaño del título */
-  }
-}
+//   .panel-header h1 {
+//     font-size: 24px;
+//     /* reducimos tamaño del título */
+//   }
+// }
 
-/* ============================= */
-/* 📱 RESPONSIVE PARA CELULAR */
-/* ============================= */
-@media (max-width: 600px) {
-  .panel-contenido {
-    grid-template-columns: 1fr;
-    /* una sola columna en móvil */
-  }
+// /* ============================= */
+// /* 📱 RESPONSIVE PARA CELULAR */
+// /* ============================= */
+// @media (max-width: 600px) {
+//   .panel-contenido {
+//     grid-template-columns: 1fr;
+//     /* una sola columna en móvil */
+//   }
 
-  .panel-contenedor {
-    padding: 15px;
-    /* reducimos padding para pantallas pequeñas */
-  }
+//   .panel-contenedor {
+//     padding: 15px;
+//     /* reducimos padding para pantallas pequeñas */
+//   }
 
-  .panel-header h1 {
-    font-size: 20px;
-    /* título más pequeño en móvil */
-  }
-}
+//   .panel-header h1 {
+//     font-size: 20px;
+//     /* título más pequeño en móvil */
+//   }
+// }

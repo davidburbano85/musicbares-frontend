@@ -1,0 +1,29 @@
+<!-- Contenedor principal del reproductor -->
+<div class="reproductor-container">
+
+  <!-- Si hay video, mostramos el iframe -->
+  <ng-container *ngIf="videoUrl; else sinVideo">
+
+    <div class="video-wrapper">
+
+      <iframe
+        [src]="videoUrl"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen
+        (load)="0">
+      </iframe>
+
+    </div>
+
+  </ng-container>
+
+  <!-- Pantalla cuando no hay videos -->
+  <ng-template #sinVideo>
+    <div class="pantalla-espera">
+      <h2>No hay videos en cola</h2>
+      <p>Esperando solicitudes desde las mesas...</p>
+    </div>
+  </ng-template>
+
+</div>

@@ -39,7 +39,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/panel/panel.component')
         .then(m => m.PanelComponent)
-    // Lazy load del panel principal del sistema
+    // Lazy load del panel principal del sistemaa
   },
 
   {

@@ -18,8 +18,8 @@ export class LoginComponent {
 
   // Angular inyecta FormBuilder aquí
   constructor(private fb: FormBuilder,
-              private authService: AuthService,
-              private router : Router
+    private authService: AuthService,
+    private router: Router
 
 
   ) {
@@ -37,43 +37,48 @@ export class LoginComponent {
   }
 
   // Método al enviar formulario
-iniciarSesion() {
+  iniciarSesion() {
 
-  // Si el formulario es inválido no hacemos nada
-  // Esto evita enviar datos incompletos al servidor
-  if (this.formularioLogin.invalid) return;
+    // Si el formulario es inválido no hacemos nada
+    // Esto evita enviar datos incompletos al servidor
+    if (this.formularioLogin.invalid) return;
 
-  // Extraemos los valores del formulario reactivo
-  const { correo, clave } = this.formularioLogin.value;
+    // Extraemos los valores del formulario reactivo
+    const { correo, clave } = this.formularioLogin.value;
 
-  // Llamamos al servicio de autenticación
-  // Este se comunica con Supabase para validar usuario
-  this.authService.iniciarSesion(correo!, clave!)
-    .subscribe({
+    // Llamamos al servicio de autenticación
+    // Este se comunica con Supabase para validar usuario
+    this.authService.iniciarSesion(correo!, clave!)
+      .subscribe({
 
-      next: resp => {
-        // Se ejecuta si el login fue exitoso
+        next: resp => {
+          // Se ejecuta si el login fue exitoso
 
-        console.log('Login correcto', resp);
-        // Mostramos respuesta en consola para depuración
+          console.log('Login correcto', resp);
 
-        this.router.navigate(['/panel']);
-        // Redirigimos al usuario al panel principal
-        // Esto solo ocurre si la autenticación fue válida
-      },
+          // Mostramos respuesta en consola para depuración
+          // Guardamos el token JWT en el navegador
+          
+          // Esto permitirá que el AuthGuard detecte sesión activa
+          localStorage.setItem('sb-auth-token', resp.access_token);
 
-      error: err => {
-        // Se ejecuta si el login falla
+          this.router.navigate(['/panel']);
+          // Redirigimos al usuario al panel principal
+          // Esto solo ocurre si la autenticación fue válida
+        },
 
-        console.error(err);
-        // Mostramos error en consola para depuración
+        error: err => {
+          // Se ejecuta si el login falla
 
-        alert('Credenciales incorrectas');
-        // Mostramos mensaje al usuario
-      }
-    });
-}
+          console.error(err);
+          // Mostramos error en consola para depuración
+
+          alert('Credenciales incorrectas');
+          // Mostramos mensaje al usuario
+        }
+      });
+  }
 
 
-  
+
 }

@@ -1,25 +1,29 @@
-<div class="contenedor-login">
+<!-- Contenedor general oscuro -->
+<div class="contenedor-app">
 
-  <div class="tarjeta-login form-largo">
+  <!-- Tarjeta reutilizable del sistema -->
+  <div class="tarjeta">
 
     <h2>Crear cuenta</h2>
 
+    <!-- Formulario reactivo -->
     <form [formGroup]="formularioRegistro" (ngSubmit)="registrar()">
 
-      <input
-        type="email"
-        formControlName="correo"
-        placeholder="Correo"
-      />
+      <!-- Campo correo -->
+      <div class="grupo-campo">
+        <label>Correo electrónico</label>
+        <input type="email" formControlName="correo">
+      </div>
 
-      <input
-        type="password"
-        formControlName="clave"
-        placeholder="Contraseña"
-      />
+      <!-- Campo contraseña -->
+      <div class="grupo-campo">
+        <label>Contraseña</label>
+        <input type="password" formControlName="clave">
+      </div>
 
+      <!-- Botón -->
       <button type="submit" [disabled]="formularioRegistro.invalid">
-        Registrarme
+        Crear cuenta
       </button>
 
     </form>

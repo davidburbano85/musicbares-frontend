@@ -1,1 +1,82 @@
-/* You can add global styles to this file, and also import other style files */
+/* ===================================================== */
+/* RESET BÁSICO GLOBAL */
+/* Esto elimina márgenes raros del navegador              */
+/* ===================================================== */
+*{
+  margin: 0;              /* quitamos márgenes por defecto */
+  padding: 0;             /* quitamos paddings por defecto */
+  box-sizing: border-box; /* evita problemas con tamaños */
+}
+
+/* ===================================================== */
+/* FUENTE GLOBAL DEL SISTEMA */
+/* ===================================================== */
+body{
+  font-family: Arial, Helvetica, sans-serif; /* fuente limpia profesional */
+}
+
+/* ===================================================== */
+/* MODO OSCURO GLOBAL DE LA APP */
+/* ===================================================== */
+body{
+  background-color: #0f172a; /* fondo azul oscuro elegante */
+  color: #e5e7eb;            /* texto claro para contraste */
+}
+
+/* ===================================================== */
+/* CONTENEDOR RESPONSIVE BASE */
+/* Lo usaremos en todo el sistema                        */
+/* ===================================================== */
+.contenedor-app{
+  width: 100%;        /* ocupa todo el ancho disponible */
+  max-width: 1200px;  /* evita que se vea gigante en pantallas grandes */
+  margin: auto;       /* centra horizontalmente */
+  padding: 20px;      /* espacio interno cómodo */
+}
+
+/* ===================================================== */
+/* TARJETAS BASE REUTILIZABLES */
+/* ===================================================== */
+.tarjeta{
+  background: #1e293b;              /* gris oscuro elegante */
+  border-radius: 12px;              /* bordes suaves */
+  padding: 20px;                    /* espacio interno */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4); /* sombra suave */
+}
+
+/* ===================================================== */
+/* BOTONES BASE GLOBALES */
+/* ===================================================== */
+button{
+  padding: 12px 18px;          /* tamaño cómodo */
+  border-radius: 8px;          /* bordes suaves */
+  border: none;                /* sin borde */
+  background: #3b82f6;         /* azul moderno */
+  color: white;                /* texto blanco */
+  font-weight: 600;            /* texto semi-negrita */
+  cursor: pointer;             /* cursor de botón */
+  transition: 0.3s;            /* animación suave */
+}
+
+/* efecto hover del botón */
+button:hover{
+  background: #2563eb; /* azul más oscuro al pasar el mouse */
+}
+
+/* ===================================================== */
+/* RESPONSIVE GLOBAL */
+/* ===================================================== */
+
+/* Tablets */
+@media (max-width: 900px){
+  .contenedor-app{
+    padding: 15px; /* reducimos espacio */
+  }
+}
+
+/* Celulares */
+@media (max-width: 600px){
+  .contenedor-app{
+    padding: 10px; /* aún más compacto */
+  }
+}
