@@ -1,37 +1,42 @@
+<!-- Contenedor global reutilizable -->
 <div class="contenedor-app">
 
-  <div class="tarjeta">
+  <!-- Tarjeta visual principal -->
+  <div class="tarjeta tarjeta-mesa">
 
-    <h2>Mesa {{ codigoMesa || '...' }}</h2>
+    <!-- Título dinámico del sistema -->
+    <h2 class="titulo-bar">
+      MusicBares
+    </h2>
 
-    <!-- Área para pegar links -->
-    <label>Pega tus links de YouTube (uno por línea)</label>
+    <!-- Texto de ayuda -->
+    <p class="texto-ayuda">
+      Pega uno o varios links de YouTube (uno por línea)
+    </p>
 
+    <!-- Área donde el cliente pega los links -->
     <textarea
-      rows="6"
-      placeholder="https://youtube.com/..."
       [(ngModel)]="linksTexto"
-      [disabled]="enviando">
+      placeholder="https://youtube.com/...
+https://youtu.be/...">
     </textarea>
 
-    <br><br>
-
     <!-- Botón enviar -->
-    <button
-      (click)="enviarLinks()"
-      [disabled]="enviando">
-
-      {{ enviando ? 'Enviando....' : 'Enviar canciones' }}
-
+    <button (click)="enviarLinks()" [disabled]="enviando">
+      {{ enviando ? 'Enviando...' : 'Enviar canciones' }}
     </button>
 
-    <br><br>
-
-    <!-- Mensaje al usuario -->
-    <p *ngIf="mensaje">
+    <!-- Mensaje visual -->
+    <p class="mensaje" *ngIf="mensaje">
       {{ mensaje }}
     </p>
 
+  </div>
+
+  <!-- Footer del sistema -->
+  <div class="footer-mesa">
+    MusicBares © {{anioActual}}
+    • Desarrollado por David Burbano
   </div>
 
 </div>

@@ -10,6 +10,8 @@ import { RegistroComponent } from './features/auth/paginas/registro/registro.com
 import { AuthGuard } from './core/guards/auth.guard';
 // Importamos nuestro guard de autenticación
 
+import { MesaComponent } from './features/mesa/paginas/mesa/mesa.component';
+
 // Definimos el arreglo de rutas principales
 export const routes: Routes = [
 
@@ -41,6 +43,12 @@ export const routes: Routes = [
         .then(m => m.PanelComponent)
     // Lazy load del panel principal del sistemaa
   },
+   {
+    path: 'mesa/:codigo',
+    loadComponent: () =>
+      import('./features/mesa/paginas/mesa/mesa.component')
+        .then(m => m.MesaComponent)
+  },
 
   {
     path: '**',
@@ -48,12 +56,7 @@ export const routes: Routes = [
 
     redirectTo: 'login'
     // Redirige automáticamente al login
-  },
-  {
-    path: 'mesa/:codigo',
-    loadComponent: () =>
-      import('./features/mesa/paginas/mesa/mesa.component')
-        .then(m => m.MesaComponent)
-  },
+  }
+ 
 
 ];

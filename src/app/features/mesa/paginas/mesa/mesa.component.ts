@@ -1,7 +1,9 @@
-import { Component } from '@angular/core'; // Decorador base del componente
+import { Component, OnInit} from '@angular/core'; // Decorador base del componente
 import { CommonModule } from '@angular/common'; // Necesario para directivas básicas
 import { FormsModule } from '@angular/forms'; // Para usar ngModel en inputs
 import { VideoService } from '../../../../core/servicios/video.service'; // Servicio de videos
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-mesa',
@@ -10,7 +12,7 @@ import { VideoService } from '../../../../core/servicios/video.service'; // Serv
   templateUrl: './mesa.component.html',
   styleUrls: ['./mesa.component.scss']
 })
-export class MesaComponent {
+export class MesaComponent implements OnInit {
 
   // Código de mesa obtenido del QR o de la URL
   codigoMesa: string = '';
@@ -25,7 +27,17 @@ export class MesaComponent {
   enviando = false;
 
   // Inyectamos servicio de videos
-  constructor(private videoService: VideoService) {}
+  constructor(private videoService: VideoService,
+              private route: ActivatedRoute//angular da acceso a la url
+  ) { }
+  //se inicia automaticamente cuando el componente inicia
+  ngOnInit(){
+    //leeemos el parametro llamado codigo desde la url
+    this.codigoMesa=this.route.snapshot.paramMap.get('codigo')||'';
+    //solo para depurar  lomiramos en consola
+    console.log('Mesa detectada desde url: ', this.codigoMesa);
+
+  }
 
   // ============================
   // ENVIAR LINKS AL BACKEND
@@ -77,6 +89,10 @@ export class MesaComponent {
 
           this.enviando = false;
         }
+
       });
+
   }
+  anioActual = new Date().getFullYear();
+
 }

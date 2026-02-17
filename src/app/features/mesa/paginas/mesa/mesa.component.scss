@@ -1,0 +1,59 @@
+/* Contenedor principal del módulo mesa */
+/* Solo centra el contenido verticalmente */
+:host {
+  display: block;              /* hace que el componente ocupe su espacio */
+  min-height: 100vh;           /* altura completa de la pantalla */
+  display: flex;               /* usamos flexbox */
+  align-items: center;         /* centra verticalmente */
+  justify-content: center;     /* centra horizontalmente */
+}
+
+/* Tarjeta principal donde vive el formulario */
+.tarjeta-mesa {
+  width: 100%;                 /* ocupa todo el ancho disponible */
+  max-width: 500px;            /* evita que se estire demasiado */
+}
+
+/* Título del bar */
+.titulo-bar {
+  font-size: 1.6rem;           /* tamaño legible */
+  font-weight: 700;            /* negrita elegante */
+  margin-bottom: 15px;         /* separación inferior */
+  text-align: center;          /* centrado */
+}
+
+/* Texto de instrucciones */
+.texto-ayuda {
+  font-size: 0.9rem;           /* tamaño más pequeño */
+  opacity: 0.8;                /* leve transparencia */
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Área del textarea */
+textarea {
+  width: 100%;                 /* ocupa todo el ancho */
+  min-height: 140px;           /* altura cómoda */
+  border-radius: 8px;          /* bordes suaves */
+  border: none;                /* sin borde feo */
+  padding: 12px;               /* espacio interno */
+  margin-bottom: 15px;
+  background: #0f172a;         /* tono oscuro */
+  color: #e5e7eb;              /* texto claro */
+  resize: vertical;            /* permite agrandar verticalmente */
+}
+
+/* Mensaje al usuario */
+.mensaje {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* Footer inferior */
+.footer-mesa {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
