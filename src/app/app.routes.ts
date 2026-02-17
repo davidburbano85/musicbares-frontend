@@ -1,20 +1,20 @@
-import { Routes } from '@angular/router'; 
+import { Routes } from '@angular/router';
 // Importamos el tipo Routes para definir las rutas de la app
 
-import { LoginComponent } from './features/auth/paginas/login/login.component'; 
+import { LoginComponent } from './features/auth/paginas/login/login.component';
 // Importamos el componente de login
 
-import { RegistroComponent } from './features/auth/paginas/registro/registro.component'; 
+import { RegistroComponent } from './features/auth/paginas/registro/registro.component';
 // Importamos el componente de registro
 
-import { AuthGuard } from './core/guards/auth.guard'; 
+import { AuthGuard } from './core/guards/auth.guard';
 // Importamos nuestro guard de autenticación
 
 // Definimos el arreglo de rutas principales
 export const routes: Routes = [
 
   {
-    path: 'login', 
+    path: 'login',
     // Ruta pública para iniciar sesión
 
     component: LoginComponent
@@ -22,7 +22,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'registro', 
+    path: 'registro',
     // Ruta pública para crear cuenta
 
     component: RegistroComponent
@@ -30,10 +30,10 @@ export const routes: Routes = [
   },
 
   {
-    path: 'panel', 
+    path: 'panel',
     // Ruta protegida (solo usuarios autenticados)
 
-    canActivate: [AuthGuard], 
+    canActivate: [AuthGuard],
     // Indicamos que esta ruta requiere pasar por el guard
 
     loadComponent: () =>
@@ -43,10 +43,17 @@ export const routes: Routes = [
   },
 
   {
-    path: '**', 
+    path: '**',
     // Ruta comodín para cualquier URL no existente
 
     redirectTo: 'login'
     // Redirige automáticamente al login
-  }
+  },
+  {
+    path: 'mesa/:codigo',
+    loadComponent: () =>
+      import('./features/mesa/paginas/mesa/mesa.component')
+        .then(m => m.MesaComponent)
+  },
+
 ];
