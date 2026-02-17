@@ -1,1 +1,37 @@
-<p>mesa works!</p>
+<div class="contenedor-app">
+
+  <div class="tarjeta">
+
+    <h2>Mesa {{ codigoMesa || '...' }}</h2>
+
+    <!-- Área para pegar links -->
+    <label>Pega tus links de YouTube (uno por línea)</label>
+
+    <textarea
+      rows="6"
+      placeholder="https://youtube.com/..."
+      [(ngModel)]="linksTexto"
+      [disabled]="enviando">
+    </textarea>
+
+    <br><br>
+
+    <!-- Botón enviar -->
+    <button
+      (click)="enviarLinks()"
+      [disabled]="enviando">
+
+      {{ enviando ? 'Enviando...' : 'Enviar canciones' }}
+
+    </button>
+
+    <br><br>
+
+    <!-- Mensaje al usuario -->
+    <p *ngIf="mensaje">
+      {{ mensaje }}
+    </p>
+
+  </div>
+
+</div>
