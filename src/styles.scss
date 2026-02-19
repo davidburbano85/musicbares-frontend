@@ -27,22 +27,25 @@ body{
 /* CONTENEDOR RESPONSIVE BASE */
 /* Lo usaremos en todo el sistema                        */
 /* ===================================================== */
-.contenedor-app{
-  width: 100%;        /* ocupa todo el ancho disponible */
-  max-width: 1200px;  /* evita que se vea gigante en pantallas grandes */
-  margin: auto;       /* centra horizontalmente */
-  padding: 20px;      /* espacio interno cómodo */
+/* Sobrescribimos temporalmente para la página de mesa */
+.contenedor-app.mesa-page {
+  display: flex;               /* flex para centrar */
+  flex-direction: column;      /* apilamos verticalmente */
+  justify-content: center;     /* centrado vertical */
+  align-items: center;         /* centrado horizontal */
+  min-height: 100vh;           /* altura completa de la pantalla */
 }
+
 
 /* ===================================================== */
 /* TARJETAS BASE REUTILIZABLES */
 /* ===================================================== */
-.tarjeta{
-  background: #1e293b;              /* gris oscuro elegante */
-  border-radius: 12px;              /* bordes suaves */
-  padding: 20px;                    /* espacio interno */
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4); /* sombra suave */
-}
+// .tarjeta{
+//   background: #1e293b;              /* gris oscuro elegante */
+//   border-radius: 12px;              /* bordes suaves */
+//   padding: 20px;                    /* espacio interno */
+//   box-shadow: 0 4px 20px rgba(0,0,0,0.4); /* sombra suave */
+// }
 
 /* ===================================================== */
 /* BOTONES BASE GLOBALES */

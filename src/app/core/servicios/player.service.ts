@@ -1,96 +1,110 @@
-import { Injectable } from '@angular/core'; // Permite inyección global
-import { BehaviorSubject, timer, Subscription } from 'rxjs'; // Manejo reactivo y temporizadores
-import { VideoService } from './video.service'; // Servicio que consume backend
+import { Injectable } from '@angular/core'; // Permite que Angular inyecte este servicio
+import { BehaviorSubject } from 'rxjs';     // Observable que mantiene el último valor emitido
+import { VideoService } from './video.service'; // Servicio que llama al backend
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root' // Hace que el servicio esté disponible en toda la app
 })
 export class PlayerService {
 
-  // Guarda SOLO el id de youtube del video actual
+  // 🔴 Guarda el ID del video actual que se está reproduciendo
+  // BehaviorSubject permite emitir y también guardar el último valor
   private videoYoutubeIdSubject = new BehaviorSubject<string | null>(null);
 
-  // Observable público al que se suscribe el reproductor
+  // 🔴 Observable público que escucha el componente reproductor
   videoYoutubeId$ = this.videoYoutubeIdSubject.asObservable();
 
-  // Guarda id del bar actual
+  // 🔴 Guarda el id del bar activo
   private idBar!: number;
 
-  // Control de espera cuando no hay videos
-  private esperaSub?: Subscription;
-
-  // Indica si el player está activo
+  // 🔴 Indica si el reproductor está activo o no
   private activo = false;
 
+  // 🔴 Inyectamos el servicio que habla con el backend
   constructor(private videoService: VideoService) {}
 
-  // ============================
+  // ==========================
   // INICIAR PLAYER
-  // ============================
+  // ==========================
   iniciar(idBar: number) {
 
-    this.idBar = idBar;      // Guardamos bar activo
-    this.activo = true;      // Activamos loop
-    this.cargarSiguiente();  // Buscamos primer video
+    // Guardamos el bar actual
+    this.idBar = idBar;
+
+    // Activamos el reproductor
+    this.activo = true;
+
+    console.log('[PlayerService] Player iniciado con idBar:', idBar);
+
+    // Pedimos el primer video al backend
+    this.cargarSiguiente();
   }
 
-  // ============================
+  // ==========================
   // DETENER PLAYER
-  // ============================
+  // ==========================
   detener() {
 
-    this.activo = false;                 // Desactivamos loop
-    this.esperaSub?.unsubscribe();       // Cancelamos temporizador
-    this.videoYoutubeIdSubject.next(null); // Limpiamos video actual
+    // Desactivamos el player
+    this.activo = false;
+
+    // Limpiamos el video actual
+    this.videoYoutubeIdSubject.next(null);
+
+    console.log('[PlayerService] Player detenido');
   }
 
-  // ============================
-  // PEDIR SIGUIENTE VIDEO
-  // ============================
+  // ==========================
+  // CARGAR SIGUIENTE VIDEO
+  // ==========================
   private cargarSiguiente() {
 
-    if (!this.activo) return; // Si el player está apagado, no hace nada
+    // Si el player está apagado no hacemos nada
+    if (!this.activo) return;
 
+    console.log('[PlayerService] Pidiendo siguiente video al backend...');
+
+    // Llamamos al backend para obtener el siguiente video
     this.videoService.obtenerSiguienteVideo(this.idBar).subscribe({
 
+      // Si el backend responde correctamente
       next: (video) => {
 
-        // Si backend no envía nada
-        if (!video || !video.id_video_youtube) {
-          this.esperarYReintentar();
+        console.log('[PlayerService] Respuesta backend:', video);
+
+        // 🔥 IMPORTANTE:
+        // El backend devuelve "idVideoYoutube"
+        // antes estábamos leyendo mal la propiedad
+        const youtubeId = video?.idVideoYoutube;
+
+        // Si no viene ID válido, no hacemos nada
+        if (!youtubeId) {
+          console.log('[PlayerService] Backend respondió sin video válido');
           return;
         }
 
-        // Emitimos SOLO el id de YouTube
-        this.videoYoutubeIdSubject.next(video.id_video_youtube);
+        // Emitimos el ID para que el componente lo reproduzca
+        console.log('[PlayerService] Emitiendo video al reproductor:', youtubeId);
+        this.videoYoutubeIdSubject.next(youtubeId);
       },
 
-      error: () => {
-        // Si falla backend, reintentamos luego
-        this.esperarYReintentar();
+      // Si ocurre un error en la llamada
+      error: (err) => {
+        console.error('[PlayerService] Error al consultar backend:', err);
       }
     });
   }
 
-  // ============================
-  // ESPERA CUANDO NO HAY VIDEOS
-  // ============================
-  private esperarYReintentar() {
-
-    this.esperaSub?.unsubscribe();
-
-    this.esperaSub = timer(5000).subscribe(() => {
-      this.cargarSiguiente();
-    });
-  }
-
-  // ============================
+  // ==========================
   // CUANDO TERMINA EL VIDEO
-  // ============================
+  // ==========================
   videoFinalizado() {
 
-    // Cuando el componente detecta que terminó el video,
-    // pedimos el siguiente automáticamente
+    console.log('[PlayerService] Video terminado → solicitando siguiente');
+
+    // Pedimos el siguiente video solo cuando el actual termina
     this.cargarSiguiente();
   }
+
+  
 }

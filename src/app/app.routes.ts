@@ -11,6 +11,8 @@ import { AuthGuard } from './core/guards/auth.guard';
 // Importamos nuestro guard de autenticación
 
 import { MesaComponent } from './features/mesa/paginas/mesa/mesa.component';
+import { ReproductorComponent } from './features/player/paginas/reproductor/reproductor.component';
+
 
 // Definimos el arreglo de rutas principales
 export const routes: Routes = [
@@ -21,6 +23,10 @@ export const routes: Routes = [
 
     component: LoginComponent
     // Componente que se mostrará en esta ruta
+  },
+  {
+    path: 'reproductor',
+    component:ReproductorComponent
   },
 
   {

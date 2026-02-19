@@ -1,66 +1,193 @@
-import { Injectable } from '@angular/core'; // Permite que el servicio pueda inyectarse en toda la app
-import { HttpClient } from '@angular/common/http'; // Cliente HTTP para consumir el backend
-import { Observable } from 'rxjs'; // Tipo Observable para manejar respuestas async
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { AuthService } from './auth.service';
 
+
+
+export interface Video {
+  idMesa:number;
+  titulo: string;
+  linkVideo: string;
+  nombreCancion:  string;
+  idVideoYoutube: string;
+  
+}
 @Injectable({
-  providedIn: 'root' // Hace que el servicio sea singleton global
+  providedIn: 'root'
 })
 export class VideoService {
-
+  private youtubeApiKey = 'AIzaSyBwNryvdSuM1OtInUdEHwnyjm5MSLIbKkQ';
   // URL base del backend para videos
   private apiUrl = 'https://musicbares-backend.onrender.com/api/VideoMesa';
 
-  // Inyectamos HttpClient para poder hacer peticiones REST
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) { }
 
-  // ================================
-  // REGISTRAR VIDEOS DESDE UNA MESA
-  // ================================
+  colaVideos(idBar: number): Observable<Video[]> {
+    const token = localStorage.getItem('access_token') || '';
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+    const url = `${this.apiUrl}/cola/${idBar}`;
+    return this.http.get<Video[]>(url, { headers });
+  }
+  obtenerTituloVideo(idVideo: string): Observable<string> {
+    const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${idVideo}&key=${this.youtubeApiKey}`;
+    return this.http.get<{ items: { snippet: { title: string } }[] }>(url) // Tipado explícito
+      .pipe(
+        map((resp) => { // Tipo de resp definido
+          if (resp.items && resp.items.length > 0) {
+            return resp.items[0].snippet.title; // Devuelve el título
+          } else {
+            return 'Título no encontrado';
+          }
+        })
+      );
+  }
+
+
+
+  // ================================================
+  // MÉTODO PRIVADO: Construye headers con token JWT de Supabase
+  // ================================================
+  private getAuthHeaders(): HttpHeaders {
+
+    const rawToken = localStorage.getItem('sb-auth-token');
+    let token = '';
+
+    if (rawToken) {
+      try {
+        const parsed = JSON.parse(rawToken);
+        token = parsed.access_token || '';
+      } catch (err) {
+        //console.error('[VideoService] Error parseando token:', err);
+      }
+    }
+
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  }
+
+  // ================================================
+  // 1️⃣ Registrar videos desde la mesa (sin token)
+  // ================================================
   registrarVideosMesa(codigoMesa: string, links: string[]): Observable<any> {
 
-    // Construimos el body que el backend espera
-    const body = {
-      codigoMesa: codigoMesa,
-      links: links
-    };
+    //console.log('[VideoService] registrarVideosMesa -> links:', links);
 
-    // Enviamos POST al endpoint correspondiente
+    const body = { codigoMesa, links };
+
     return this.http.post(`${this.apiUrl}/registrar-multiples`, body);
   }
 
-  // ================================
-  // OBTENER VIDEOS DE UNA MESA
-  // ================================
-  obtenerVideosMesa(idMesa: number): Observable<any> {
-
-    // GET simple pasando el id de la mesa en la URL
-    return this.http.get(`${this.apiUrl}/mesa/${idMesa}`);
-  }
-
-  // ================================
-  // OBTENER COLA COMPLETA DEL BAR
-  // ================================
-  obtenerColaBar(idBar: number): Observable<any> {
-
-    // Devuelve todos los videos pendientes y en proceso
-    return this.http.get(`${this.apiUrl}/cola/${idBar}`);
-  }
-
-  // ================================
-  // OBTENER SIGUIENTE VIDEO (ROUND ROBIN)
-  // ================================
+  // ================================================
+  // 2️⃣ Obtener siguiente video (requiere token)
+  // ================================================
   obtenerSiguienteVideo(idBar: number): Observable<any> {
 
-    // Este endpoint es el corazón del reproductor automático
-    return this.http.get(`${this.apiUrl}/siguiente/${idBar}`);
+    // 🔹 Obtenemos token real desde Supabase localStorage
+    const token = this.obtenerTokenSupabase();
+
+   // console.log('[VideoService] obtenerSiguienteVideo -> token detectado:', token);
+
+    // 🔹 Creamos headers SIEMPRE con Authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+   // console.log('[VideoService] obtenerSiguienteVideo -> headers:', headers);
+
+    const url = `${this.apiUrl}/siguiente/${idBar}`;
+
+   // console.log('[VideoService] obtenerSiguienteVideo -> URL:', url);
+
+    return this.http.get(url, { headers });
   }
 
-  // ================================
-  // ELIMINAR VIDEO POR ID
-  // ================================
+  // ================================================
+  // 3️⃣ Eliminar video
+  // ================================================
   eliminarVideo(idVideo: number): Observable<any> {
 
-    // DELETE directo con id del video
-    return this.http.delete(`${this.apiUrl}/${idVideo}`);
+    const headers = this.construirHeaders();
+
+   // console.log('[VideoService] eliminarVideo -> headers:', headers);
+
+    return this.http.delete(`${this.apiUrl}/${idVideo}`, { headers });
   }
+
+  // ================================================
+  // 🔐 MÉTODO CENTRAL: obtiene token real de Supabase
+  // ================================================
+  private obtenerTokenSupabase(): string {
+
+    // Supabase guarda sesión como JSON en "sb-auth-token"
+    const raw = localStorage.getItem('sb-auth-token');
+
+   // console.log('[VideoService] obtenerTokenSupabase -> raw token:', raw);
+
+    if (!raw) {
+     // console.warn('[VideoService] No existe sesión Supabase en localStorage');
+      return '';
+    }
+
+    try {
+
+      const parsed = JSON.parse(raw);
+
+      const token = parsed?.access_token || '';
+
+     // console.log('[VideoService] Token extraído correctamente:', token);
+
+      return token;
+
+    } catch (err) {
+
+     // console.error('[VideoService] Error parseando token Supabase:', err);
+      return '';
+    }
+  }
+
+  // ================================================
+  // 🔐 Construye headers reutilizables
+  // ================================================
+  private construirHeaders(): HttpHeaders {
+
+    const token = this.obtenerTokenSupabase();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+   // console.log('[VideoService] construirHeaders -> headers:', headers);
+
+    return headers;
+  }
+  // ================================================
+  // 6️⃣ Marcar video como iniciado (cuando YA empezó a reproducirse)
+  // Este endpoint debe existir en tu backend
+  // ================================================
+  marcarVideoIniciado(idYoutube: string): Observable<any> {
+
+   // console.log('[VideoService] marcarVideoIniciado -> idYoutube:', idYoutube);
+
+    // Obtenemos headers con token JWT real
+    const headers = this.getAuthHeaders();
+   // console.log('[VideoService] marcarVideoIniciado -> Headers:', headers);
+
+    // 🔴 AJUSTA ESTA RUTA SEGÚN TU BACKEND
+    const url = `${this.apiUrl}/marcar-iniciado/${idYoutube}`;
+
+  //  console.log('[VideoService] marcarVideoIniciado -> URL:', url);
+
+    // Enviamos PUT vacío (solo para cambiar estado)
+    return this.http.put(url, {}, { headers });
+  }
+
 }

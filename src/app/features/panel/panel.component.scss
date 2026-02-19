@@ -1,79 +1,153 @@
-// /* Contenedor principal que ocupa toda la pantalla */
-// .panel-contenedor {
-//   min-height: 100vh; /* asegura que cubra toda la altura del viewport */
-//   padding: 20px; /* espacio interno para que no pegue a los bordes */
-//   background: #f4f6f9; /* fondo neutro profesional */
-//   display: flex; /* usamos flexbox para organizar contenido */
-//   flex-direction: column; /* elementos en columna */
-//   gap: 20px; /* separación entre header y contenido */
-// }
+/* ============================= */
+/* CONTENEDOR GENERAL DEL PANEL */
+/* ============================= */
+.panel-container {
+    min-height: 100vh;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background: #0f172a; /* fondo oscuro elegante */
+    color: #e5e7eb; /* texto claro */
+}
 
-// /* Encabezado del panel */
-// .panel-header {
-//   background: white; /* fondo blanco tipo dashboard */
-//   padding: 20px; /* espacio interno */
-//   border-radius: 10px; /* bordes suaves */
-//   box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* sombra ligera profesional */
-// }
+/* ============================= */
+/* ENCABEZADO DEL PANEL */
+/* ============================= */
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
-// /* Título principal */
-// .panel-header h1 {
-//   margin: 0; /* quitamos margen por defecto del navegador */
-//   font-size: 28px; /* tamaño grande para PC */
-// }
+.panel-header h1 {
+    color: #e5e7eb;
+}
 
-// /* Subtítulo */
-// .panel-header p {
-//   margin-top: 5px; /* pequeño espacio bajo el título */
-//   color: #666; /* color gris suave */
-// }
+.btn-cerrar {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: 0.25s;
+}
 
-// /* Sección de contenido */
-// .panel-contenido {
-//   display: grid; /* grid permite layout flexible */
-//   grid-template-columns: repeat(3, 1fr); /* 3 columnas en escritorio */
-//   gap: 20px; /* espacio entre tarjetas */
-// }
+.btn-cerrar:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(37,99,235,0.35);
+}
 
-// /* Tarjeta del panel */
-// .tarjeta-panel {
-//   background: white; /* fondo blanco */
-//   padding: 20px; /* espacio interno */
-//   border-radius: 10px; /* bordes redondeados */
-//   box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* sombra suave */
-// }
+/* ============================= */
+/* GRID PRINCIPAL (DOS COLUMNAS) */
+/* ============================= */
+.panel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
 
-// /* ============================= */
-// /* 📱 RESPONSIVE PARA TABLET */
-// /* ============================= */
-// @media (max-width: 1024px) {
-//   .panel-contenido {
-//     grid-template-columns: repeat(2, 1fr);
-//     /* pasamos a 2 columnas en tablet */
-//   }
+/* COLUMNAS */
+.panel-column {
+    background: #111827; /* fondo sección oscuro */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
 
-//   .panel-header h1 {
-//     font-size: 24px;
-//     /* reducimos tamaño del título */
-//   }
-// }
+/* INFO COLUMNA */
+.info-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
-// /* ============================= */
-// /* 📱 RESPONSIVE PARA CELULAR */
-// /* ============================= */
-// @media (max-width: 600px) {
-//   .panel-contenido {
-//     grid-template-columns: 1fr;
-//     /* una sola columna en móvil */
-//   }
+/* COLA DE VIDEOS */
+.cola-column {
+    display: flex;
+    flex-direction: column;
+}
 
-//   .panel-contenedor {
-//     padding: 15px;
-//     /* reducimos padding para pantallas pequeñas */
-//   }
+/* ============================= */
+/* SECCIONES INTERNAS */
+/* ============================= */
+.panel-section {
+    margin-bottom: 20px;
+}
 
-//   .panel-header h1 {
-//     font-size: 20px;
-//     /* título más pequeño en móvil */
-//   }
-// }
+.panel-section h2 {
+    margin-bottom: 10px;
+    color: #e5e7eb;
+}
+
+/* FORMULARIOS */
+input {
+    width: 100%;
+    padding: 11px;
+    border-radius: 6px;
+    border: 1px solid #374151;
+    background: #020617;
+    color: #e5e7eb;
+    transition: 0.2s;
+    margin-bottom: 10px;
+}
+
+input::placeholder {
+    color: #64748b;
+}
+
+input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59,130,246,0.25);
+}
+
+/* BOTONES */
+button {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(37,99,235,0.35);
+}
+
+button:disabled {
+    background: #334155;
+    cursor: not-allowed;
+}
+
+/* COLA DE VIDEOS */
+.cola-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.cola-section li {
+    margin-bottom: 8px;
+    padding: 8px;
+    background: #1e293b;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* RESPONSIVE PARA MÓVILES */
+@media (max-width: 768px) {
+    .panel-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cola-column {
+        order: 2; /* cola de videos al final */
+    }
+}

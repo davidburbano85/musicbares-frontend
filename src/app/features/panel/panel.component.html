@@ -1,29 +1,105 @@
-<!-- Contenedor principal del dashboard -->
-<!-- Esta clase permite aplicar fondo oscuro global -->
-<div class="contenedor-app">
+<!-- ===============================
+     Contenedor principal del panel
+================================ -->
+<div class="panel-container">
 
-  <!-- Tarjeta central del panel -->
-  <!-- Aquí vive el contenido del dashboard -->
-  <div class="tarjeta">
-
-    <!-- Título principal del sistema -->
-    <!-- Más adelante aquí mostraremos el nombre del bar -->
-    <h1>
-      MusicBares
-    </h1>
-
-    <!-- Texto descriptivo -->
-    <!-- Solo informativo mientras conectamos datos reales -->
-    <p>
-      Bienvenido al panel del sistema.
-    </p>
-
-    <!-- Botón de ejemplo -->
-    <!-- Luego lo conectaremos al logout -->
-    <button>
-      Cerrar sesión
-    </button>
-
+  <!-- ===============================
+       ENCABEZADO DEL PANEL
+  ================================= -->
+  <div class="panel-header">
+    <h1>{{ titulo }}</h1>
+    <button class="btn-cerrar" (click)="cerrarSesion()">Cerrar sesión</button>
   </div>
 
+  <!-- ===============================
+       GRID RESPONSIVE: Dos columnas en pantalla grande
+       Una columna para info/mesas, otra para cola de videos
+  ================================= -->
+  <div class="panel-grid">
+
+    <!-- ===============================
+         COLUMNA 1: Usuario, Bar, Mesas
+    ================================= -->
+    <div class="panel-column info-column">
+
+      <!-- ===============================
+           SECCIÓN USUARIO
+      ================================= -->
+      <div class="panel-section usuario-section">
+        <h2>Usuario</h2>
+        <p><strong>Nombre:</strong> {{ authService.usuarioReal?.nombreCompleto }}</p>
+        <!-- <p><strong>Email:</strong> {{ authService.usuarioReal?.correoElectronico }}</p> -->
+        <div class="form-usuario">
+          <input type="text" placeholder="Nombre completo" #nombreUsuario />
+          <input type="email" placeholder="Correo electrónico" #correoUsuario />
+          <button (click)="actualizarUsuarioForm(correoUsuario.value, nombreUsuario.value)">
+            Actualizar Usuario
+          </button>
+        </div>
+      </div>
+
+      <!-- ===============================
+           SECCIÓN BAR
+      ================================= -->
+      <div class="panel-section bar-section" *ngIf="authService.barUsuario">
+        <h2>Bar</h2>
+        <p><strong>Nombre del bar:</strong> {{ authService.barUsuario.nombreBar }}</p>
+        <div class="form-bar">
+          <input type="text" placeholder="Nombre del bar" #nombreBar />
+          <input type="text" placeholder="Dirección del bar" #direccionBar />
+          <button (click)="actualizarBarForm(nombreBar.value, direccionBar.value)">
+            Actualizar Bar
+          </button>
+        </div>
+      </div>
+
+      <!-- ===============================
+           SECCIÓN MESAS
+      ================================= -->
+      <div class="panel-section mesas-section">
+        <h2>Actualizar Mesa</h2>
+
+        <!-- 🔹 Paso 1: buscar mesa -->
+        <input type="text" placeholder="QR actual" #qrBuscar />
+        <button (click)="buscarMesa(qrBuscar.value)">
+          Buscar Mesa
+        </button>
+
+        <!-- 🔹 Paso 2: editar mesa -->
+        <div *ngIf="modoEdicionMesa" class="form-mesa-update">
+
+          <p>Mesa encontrada: {{ mesaSeleccionada?.numeroMesa }}</p>
+
+          <input type="number" placeholder="Nuevo número" #nuevoNumero />
+          <input type="text" placeholder="Nuevo QR" #nuevoQR />
+
+          <button (click)="guardarMesa(+nuevoNumero.value, nuevoQR.value)">
+            Guardar Cambios
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ===============================
+         COLUMNA 2: Cola de Videos
+    ================================= -->
+    <div class="panel-column cola-column">
+      <div class="panel-section cola-section">
+        <h2>Cola de Videos</h2>
+        <div *ngIf="!cola || cola.length === 0">
+          No hay videos en la cola.
+        </div>
+        <ul *ngIf="cola && cola.length > 0">
+          <li *ngFor="let video of cola">
+            <strong>{{ video.tituloCancion }}</strong> - Mesa: {{ video.qrMesa || 'No disponible' }}
+            <button (click)="eliminarVideo(video.idVideo)">Eliminar</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
 </div>

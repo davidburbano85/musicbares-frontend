@@ -1,59 +1,114 @@
-/* Contenedor principal del módulo mesa */
-/* Solo centra el contenido verticalmente */
-:host {
-  display: block;              /* hace que el componente ocupe su espacio */
-  min-height: 100vh;           /* altura completa de la pantalla */
-  display: flex;               /* usamos flexbox */
-  align-items: center;         /* centra verticalmente */
-  justify-content: center;     /* centra horizontalmente */
+/* ====================================================== */
+/* Contenedor principal centrado vertical y horizontal   */
+/* ====================================================== */
+.mesa-page {
+  display: flex;                 /* flex para centrar */
+  justify-content: center;       /* centrado horizontal */
+  align-items: center;           /* centrado vertical */
+  min-height: 100vh;             /* ocupa toda la pantalla */
+  padding: 20px;
+  background-color: red;    /* fondo oscuro */
 }
 
-/* Tarjeta principal donde vive el formulario */
+/* ====================================================== */
+/* Tarjeta que contiene el formulario                     */
+/* ====================================================== */
 .tarjeta-mesa {
-  width: 100%;                 /* ocupa todo el ancho disponible */
-  max-width: 500px;            /* evita que se estire demasiado */
+  width: 100%;
+  max-width: 500px;      /* ancho fijo para tarjeta */
+  padding: 30px;
+  border-radius: 12px;
+  background-color: #111827;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  color: #e5e7eb;
 }
 
-/* Título del bar */
+
+/* ====================================================== */
+/* Título del bar                                        */
+/* ====================================================== */
 .titulo-bar {
-  font-size: 1.6rem;           /* tamaño legible */
-  font-weight: 700;            /* negrita elegante */
-  margin-bottom: 15px;         /* separación inferior */
-  text-align: center;          /* centrado */
-}
-
-/* Texto de instrucciones */
-.texto-ayuda {
-  font-size: 0.9rem;           /* tamaño más pequeño */
-  opacity: 0.8;                /* leve transparencia */
-  margin-bottom: 15px;
   text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
 }
 
-/* Área del textarea */
-textarea {
-  width: 100%;                 /* ocupa todo el ancho */
-  min-height: 140px;           /* altura cómoda */
-  border-radius: 8px;          /* bordes suaves */
-  border: none;                /* sin borde feo */
-  padding: 12px;               /* espacio interno */
-  margin-bottom: 15px;
-  background: #0f172a;         /* tono oscuro */
-  color: #e5e7eb;              /* texto claro */
-  resize: vertical;            /* permite agrandar verticalmente */
-}
-
-/* Mensaje al usuario */
-.mensaje {
-  margin-top: 10px;
+/* ====================================================== */
+/* Texto de ayuda                                        */
+/* ====================================================== */
+.texto-ayuda {
   text-align: center;
   font-size: 0.95rem;
+  opacity: 0.8;
 }
 
-/* Footer inferior */
-.footer-mesa {
-  margin-top: 20px;
+/* ====================================================== */
+/* Textarea para pegar links                              */
+/* ====================================================== */
+textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  background-color: #020617;
+  color: #e5e7eb;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.25);
+}
+
+/* ====================================================== */
+/* Botón de envío                                        */
+/* ====================================================== */
+button {
+  width: 100%;
+  padding: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transition: 0.25s;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37,99,235,0.35);
+}
+
+button:disabled {
+  background-color: #334155;
+  cursor: not-allowed;
+}
+
+/* ====================================================== */
+/* Mensaje opcional                                      */
+/* ====================================================== */
+.mensaje {
   text-align: center;
-  font-size: 0.8rem;
-  opacity: 0.6;
+  font-size: 0.95rem;
+  color: #e5e7eb;
+}
+
+/* ====================================================== */
+/* Responsive para pantallas pequeñas                    */
+/* ====================================================== */
+@media (max-width: 600px) {
+  .tarjeta-mesa {
+    padding: 20px;
+  }
+  textarea {
+    min-height: 120px;
+  }
 }

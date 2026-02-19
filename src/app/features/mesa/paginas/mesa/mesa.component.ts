@@ -93,6 +93,6 @@ export class MesaComponent implements OnInit {
       });
 
   }
-  anioActual = new Date().getFullYear();
+
 
 }

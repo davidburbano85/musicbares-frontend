@@ -1,29 +1,19 @@
-<!-- Contenedor principal del reproductor -->
 <div class="reproductor-container">
 
-  <!-- Si hay video, mostramos el iframe -->
-  <ng-container *ngIf="videoUrl; else sinVideo">
+  <!-- 🔴 Contenedor del iframe de YouTube -->
+  <div #playerContainer class="youtube-player"></div>
 
-    <div class="video-wrapper">
+  <!-- 🔴 Mensaje cuando el video está bloqueado -->
+  <div *ngIf="videoBloqueado" class="video-bloqueado">
+    <p>Este video no se puede reproducir aquí</p>
+    <button (click)="abrirEnYouTube()">Abrir en YouTube</button>
+    <p>(Si no haces click en 30s, se pasará al siguiente video automáticamente)</p>
+  </div>
 
-      <iframe
-        [src]="videoUrl"
-        frameborder="0"
-        allow="autoplay; encrypted-media"
-        allowfullscreen
-        (load)="0">
-      </iframe>
-
-    </div>
-
-  </ng-container>
-
-  <!-- Pantalla cuando no hay videos -->
-  <ng-template #sinVideo>
-    <div class="pantalla-espera">
-      <h2>No hay videos en cola</h2>
-      <p>Esperando solicitudes desde las mesas...</p>
-    </div>
-  </ng-template>
+  <!-- 🔴 Pantalla de espera si no hay video -->
+  <div *ngIf="!videoActual && !videoBloqueado" class="pantalla-espera">
+    <h2>No hay videos en cola</h2>
+    <p>Esperando solicitudes desde las mesas...</p>
+  </div>
 
 </div>
