@@ -40,23 +40,32 @@ export class ReproductorComponent implements OnInit, OnDestroy {
   constructor(private playerService: PlayerService) { }
 
   ngOnInit() {
-    // Nos suscribimos al observable que entrega los IDs de videos
-    this.playerService.videoYoutubeId$.subscribe(id => {
-      // Reiniciamos estado de bloqueo
-      this.videoBloqueado = false;
-
-      // Guardamos el video actual
-      this.videoActual = id;
-
-      // Si existe un video válido, cargamos la API de YouTube
-      if (id) {
-        this.cargarYouTubeAPI();
-      }
-    });
-
-    // Iniciamos el servicio del player para que consulte al backend
-    this.playerService.iniciar(10);
+  // 🔹 Obtenemos idBar del dueño logueado desde localStorage
+  const idBarStr = localStorage.getItem('idBar');
+  if (!idBarStr) {
+    console.error('[Reproductor] No se encontró idBar en localStorage. Asegúrate de iniciar sesión primero.');
+    return;
   }
+
+  const idBar = Number(idBarStr);
+
+  // 🔹 Iniciamos el servicio del player con el bar del dueño
+  this.playerService.iniciar(idBar);
+
+  // 🔹 Nos suscribimos al observable que entrega los IDs de videos
+  this.playerService.videoYoutubeId$.subscribe(id => {
+    // Reiniciamos estado de bloqueo
+    this.videoBloqueado = false;
+
+    // Guardamos el video actual
+    this.videoActual = id;
+
+    // Si existe un video válido, cargamos la API de YouTube
+    if (id) {
+      this.cargarYouTubeAPI();
+    }
+  });
+}
 
   ngOnDestroy() {
     // Limpiamos cualquier timer y destruimos el player al salir del componente

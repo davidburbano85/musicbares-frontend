@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 
 
@@ -29,8 +29,10 @@ export class VideoService {
   colaVideos(idBar: number): Observable<Video[]> {
     const token = localStorage.getItem('access_token') || '';
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
-
+    console.log("colavideos[VIDEOSERVICES] IDbAR",idBar);
+    
     const url = `${this.apiUrl}/cola/${idBar}`;
+    this.http.get<Video[]>(`${this.apiUrl}/cola/${idBar}`).subscribe(console.log, console.error);
     return this.http.get<Video[]>(url, { headers });
   }
   obtenerTituloVideo(idVideo: string): Observable<string> {
@@ -75,14 +77,16 @@ export class VideoService {
   // ================================================
   // 1️⃣ Registrar videos desde la mesa (sin token)
   // ================================================
-  registrarVideosMesa(codigoMesa: string, links: string[]): Observable<any> {
+ registrarVideosMesa(codigoMesa: string, links: string[]): Observable<any> {
 
-    //console.log('[VideoService] registrarVideosMesa -> links:', links);
-
-    const body = { codigoMesa, links };
-
-    return this.http.post(`${this.apiUrl}/registrar-multiples`, body);
+  // 🔹 Chequeo de sesión antes de enviar
+  if (!this.authService.estaAutenticado()) {
+    return throwError(() => new Error('Usuario no autenticado, no se puede enviar canciones'));
   }
+
+  const body = { codigoMesa, links };
+  return this.http.post(`${this.apiUrl}/registrar-multiples`, body);
+}
 
   // ================================================
   // 2️⃣ Obtener siguiente video (requiere token)

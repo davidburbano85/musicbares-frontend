@@ -15,34 +15,43 @@ export class AppComponent implements OnInit {
   anioActual = new Date().getFullYear();
 
 
-  constructor(private authService: AuthService) {}
-//todo lo siguiente para cambiar el nombre del bar
+  constructor(private authService: AuthService) { }
+  //todo lo siguiente para cambiar el nombre del bar
   ngOnInit(): void {
-    // 🔹 Revisamos si ya hay un usuario logueado y bar cargado
+
+    // 🔹 Revisamos si hay un usuario logueado
     const email = localStorage.getItem('usuarioEmail');
-    if (!email) return;
+    if (!email) {
+      console.warn('[DEBUG APP] No hay email en localStorage');
+      return;
+    }
 
-    // 🔹 Cargamos el usuario
-    this.authService.cargarUsuarioRealPorEmail(email).subscribe({
-      next: () => {
-        const idUsuario = this.authService.usuarioReal?.idUsuario;
-        if (!idUsuario) return;
+    // 🔹 Cargamos el bar directamente por correo
+    this.authService.cargarBarPorCorreo(email).subscribe({
 
-        // 🔹 Cargamos el bar del usuario
-        this.authService.cargarBarPorUsuario(idUsuario).subscribe({
-          next: barArray => {
-            const bar: BarUsuario | null = barArray[0] || null;
-            if (bar) {
-              // 🔹 Actualizamos título con el nombre del bar
-              document.title = `MusicBares - ${bar.nombreBar}`;
-            } else {
-              document.title = 'MusicBares';
-            }
-          },
-          error: err => console.error('[AppComponent] Error cargando bar:', err)
-        });
+      // 🟢 Bar recibido correctamente
+      next: bar => {
+
+        console.log('[DEBUG APP] Bar recibido por correo:', bar);
+
+        if (bar && bar.idBar) {
+          // 🔹 Guardamos idBar en localStorage para uso global
+          localStorage.setItem('idBar', bar.idBar.toString());
+
+          // 🔹 Actualizamos título con el nombre del bar
+          document.title = `MusicBares - ${bar.nombreBar}`;
+
+        } else {
+          console.warn('[DEBUG APP] Usuario sin bar asignado → título genérico');
+          document.title = 'MusicBares';
+        }
       },
-      error: err => console.error('[AppComponent] Error cargando usuario:', err)
+
+      // 🔴 Error cargando bar
+      error: err => {
+        console.error('[DEBUG APP] Error cargando bar por correo:', err);
+        document.title = 'MusicBares';
+      }
     });
   }
 }

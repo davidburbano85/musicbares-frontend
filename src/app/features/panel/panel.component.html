@@ -8,9 +8,11 @@
   ================================= -->
   <div class="panel-header">
     <h1>{{ titulo }}</h1>
-    <button class="btn-cerrar" (click)="cerrarSesion()">Cerrar sesión</button>
+    <button class="panel-header" (click)="cerrarSesion()">Cerrar sesión</button>
   </div>
-
+  <div>
+    <button (click)="abrirReproductor()">Abrir Reproductor</button>
+  </div>
   <!-- ===============================
        GRID RESPONSIVE: Dos columnas en pantalla grande
        Una columna para info/mesas, otra para cola de videos
@@ -36,11 +38,27 @@
             Actualizar Usuario
           </button>
         </div>
+
       </div>
 
       <!-- ===============================
            SECCIÓN BAR
       ================================= -->
+      <!-- ===============================
+     FORMULARIO CREAR BAR (solo primera vez)
+================================= -->
+      <div class="panel-section bar-section" *ngIf="mostrarFormularioBar">
+
+        <h2>Crear Bar</h2>
+
+        <input type="text" placeholder="Nombre del bar" #nombreBar />
+        <input type="text" placeholder="Dirección del bar" #direccionBar />
+
+        <button (click)="crearBarForm(nombreBar, direccionBar)">
+          Crear Bar
+        </button>
+
+      </div>
       <div class="panel-section bar-section" *ngIf="authService.barUsuario">
         <h2>Bar</h2>
         <p><strong>Nombre del bar:</strong> {{ authService.barUsuario.nombreBar }}</p>
@@ -64,7 +82,6 @@
         <button (click)="buscarMesa(qrBuscar.value)">
           Buscar Mesa
         </button>
-
         <!-- 🔹 Paso 2: editar mesa -->
         <div *ngIf="modoEdicionMesa" class="form-mesa-update">
 
@@ -79,6 +96,16 @@
 
         </div>
 
+      </div>
+      <div class="panel-section mesas-section">
+        <h2>Crear Mesa</h2>
+
+        <input type="number" placeholder="Número de mesa" #numeroMesaNueva />
+        <input type="text" placeholder="nombre de mesa o codigoQR" #qrMesaNueva />
+
+        <button (click)="crearMesaForm(+numeroMesaNueva.value, qrMesaNueva.value)">
+          Crear Mesa
+        </button>
       </div>
 
     </div>

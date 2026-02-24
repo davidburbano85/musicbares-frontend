@@ -10,9 +10,7 @@ import { RegistroComponent } from './features/auth/paginas/registro/registro.com
 import { AuthGuard } from './core/guards/auth.guard';
 // Importamos nuestro guard de autenticación
 
-import { MesaComponent } from './features/mesa/paginas/mesa/mesa.component';
 import { ReproductorComponent } from './features/player/paginas/reproductor/reproductor.component';
-
 
 // Definimos el arreglo de rutas principales
 export const routes: Routes = [

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 /**
@@ -10,6 +10,7 @@ export interface RespuestaLogin {
   refresh_token: string;
   expires_in: number;
   token_type: string;
+  idBar?: number;
 }
 //Interfaz para almacenar los datos completos del usuario
 export interface UsuarioReal {
@@ -19,10 +20,12 @@ export interface UsuarioReal {
   correoElectronico: string;
   fechaCreacion: string;
   estado: boolean;
+  idBar: number;
 }
 export interface BarUsuario {
   idBar: number;
-  nombreBar: number;
+  nombreBar: string;
+  //nombreBar: number;
 }
 // 🔹 Interface para la mesa
 export interface Mesa {
@@ -44,6 +47,7 @@ export class AuthService {
    * URL de autenticación Supabase
    */
   private urlAuth = 'https://kthypysefudciehungyg.supabase.co/auth/v1/token?grant_type=password';
+  private apikey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt0aHlweXNlZnVkY2llaHVuZ3lnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyNDIzMjEsImV4cCI6MjA4NTgxODMyMX0.ZbjjHEL0Ej91Qd8cTqxxcAqKUJJSGpIKtxZf7Odq07Y'
   private _datosUsuario: UsuarioReal | null = null;
   private _barUsuario: BarUsuario | null = null;
   // 🔹 Variable privada en AuthService
@@ -168,19 +172,20 @@ export class AuthService {
   }
 
 
-  // Carga el bar asociado al usuario
 
-  cargarBarPorUsuario(idUsuario: number): Observable<BarUsuario[]> {
+  //este caalapp.component
+  cargarBarPorUsuario(idUsuario: number): Observable<BarUsuario> {
     const token = localStorage.getItem('access_token') || '';
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    const url = `https://musicbares-backend.onrender.com/api/bar/usuario/${idUsuario}`;
 
-    const urlBar = `https://musicbares-backend.onrender.com/api/bar/usuario/${idUsuario}`;
-    return this.http.get<BarUsuario[]>(urlBar, { headers }).pipe(
-      tap(resBar => {
-        // Asumimos que solo hay un bar principal, tomamos el primero
-        if (resBar.length > 0) {
-          this._barUsuario = resBar[0];
-          console.log('[AuthService] Datos del bar cargados:', this._barUsuario);
+    return this.http.get<BarUsuario>(url, { headers }).pipe(
+      tap(res => {
+        if (res) {
+          this._barUsuario = res;
+          console.log('[AuthService] Bar del usuario cargado:', this._barUsuario);
+        } else {
+          console.warn('[AuthService] Usuario no tiene bar asociado');
         }
       })
     );
@@ -200,6 +205,78 @@ export class AuthService {
       })
     );
   }
+
+  cargarBarPorCorreo(correoElectronico: string): Observable<BarUsuario> {
+    // 🔹 Obtenemos token del localStorage
+    const token = localStorage.getItem('access_token') || '';
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+    // 🔹 Construimos URL usando el correo electrónico
+    const url = `https://musicbares-backend.onrender.com/api/bar/correo/${encodeURIComponent(correoElectronico)}`;
+
+    // console.log('[AuthService] Buscando bar por correo:', correoElectronico);
+    // console.log('[AuthService] URL llamada:', url);
+
+    // 🔹 Llamada HTTP al backend
+    return this.http.get<BarUsuario>(url, { headers }).pipe(
+      tap(bar => {
+        if (bar && bar.idBar) {
+          // 🔹 Guardamos bar en servicio para uso interno
+          this._barUsuario = bar;
+          // console.log('[AuthService] Bar cargado por correo:', this._barUsuario);
+        } else {
+          console.warn('[AuthService] No se encontró bar para este correo');
+        }
+      })
+    );
+  }
+
+  refrescarToken(): Observable<string> {
+    const rawToken = localStorage.getItem('sb-auth-token');
+    if (!rawToken) {
+      console.warn('[AuthService] No hay token para refrescar');
+      return throwError(() => new Error('No hay token disponible'));
+    }
+
+    let refreshToken: string;
+    try {
+      const parsed = JSON.parse(rawToken);
+      refreshToken = parsed.refresh_token;
+      if (!refreshToken) throw new Error('No existe refresh_token');
+    } catch (err) {
+      console.error('[AuthService] Error parseando token:', err);
+      return throwError(() => new Error('Token inválido'));
+    }
+
+    const url = `${this.urlAuth}`;
+    const headers = new HttpHeaders({
+      'apikey': this.apikey,
+      'Content-Type': 'application/json'
+    });
+    const body = { refresh_token: refreshToken };
+
+    console.log('[AuthService] Intentando refrescar token con refresh_token:', refreshToken);
+
+    return this.http.post<any>(url, body, { headers }).pipe(
+      map(resp => {
+        if (!resp || !resp.access_token) {
+          throw new Error('No se recibió access_token al refrescar');
+        }
+
+        // 🔹 Actualizar localStorage con nueva sesión
+        localStorage.setItem('sb-auth-token', JSON.stringify(resp));
+        console.log('[AuthService] Token renovado correctamente:', resp.access_token);
+        return resp.access_token;
+      }),
+      catchError(err => {
+        console.error('[AuthService] Error refrescando token:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+
+
   /** Getters para acceder desde componentes */
   get usuarioReal(): UsuarioReal | null {
     return this._datosUsuario;
