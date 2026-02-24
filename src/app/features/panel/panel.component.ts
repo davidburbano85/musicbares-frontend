@@ -5,7 +5,6 @@ import { VideoService } from '../../core/servicios/video.service';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { MesaService } from '../../core/servicios/mesa.service';
 import { AuthService, UsuarioReal, BarUsuario } from '../../core/servicios/auth.service';
-import { ActivarBoolService } from '../auth/services/activarBool.service';
 import { BarCrearDto, BarService } from '../../core/servicios/bar.service';
 import { FormGroup } from '@angular/forms';
 
@@ -30,7 +29,6 @@ export class PanelComponent implements OnInit {
     private router: Router,
     public authService: AuthService,
     private http: HttpClient,
-    public activarBoolService: ActivarBoolService,
     private barService: BarService
   ) { }
 

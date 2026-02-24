@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common'; // Necesario para directivas bá
 import { FormsModule } from '@angular/forms'; // Para usar ngModel en inputs
 import { VideoService } from '../../../../core/servicios/video.service'; // Servicio de videos
 import { ActivatedRoute } from '@angular/router';
-import { ActivarBoolService } from '../../../auth/services/activarBool.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../../../core/servicios/auth.service';
 
@@ -34,7 +33,6 @@ pantallaPanel: boolean = true;
   // Inyectamos servicio de videos
   constructor(private videoService: VideoService,
     private route: ActivatedRoute,//angular da acceso a la url
-    public activarBoolService: ActivarBoolService,
     private authService: AuthService,
   ) {
   }
