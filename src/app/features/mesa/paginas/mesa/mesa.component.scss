@@ -62,13 +62,14 @@ body {
   height: 140%;
   background: radial-gradient(
     circle, 
-    rgba(96,165,250,0.25),  /* azul neon */
+    rgba(96,165,250,0.25),
     rgba(59,130,246,0.15) 40%, 
     transparent 70%
   );
-  opacity: 0.35;  /* más intenso */
+  opacity: 0.35;
   pointer-events: none;
-  filter: blur(50px); /* difuminado más grande */
+  filter: blur(50px);
+  transition: all 0.3s ease;
 }
 
 /* =============================== */
@@ -172,12 +173,17 @@ button:disabled {
 }
 
 /* =============================== */
-/* RESPONSIVE                      */
+/* RESPONSIVE MÓVIL                */
 /* =============================== */
 @media (max-width: 500px) {
   .tarjeta-mesa {
     width: 100%;
     padding: 28px;
+  }
+
+  .tarjeta-mesa::before {
+    opacity: 0.6;       /* glow más visible en móviles */
+    filter: blur(80px); /* difuminado más grande */
   }
 
   textarea {
