@@ -1,42 +1,58 @@
 /* =============================== */
+/* RESET GLOBAL                    */
+/* =============================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+/* =============================== */
 /* CONTENEDOR GLOBAL               */
 /* =============================== */
 .mesa-page {
   height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background: radial-gradient(circle at top, #27385f, #020617);
+  justify-content: center; /* centrado horizontal */
+  align-items: center;     /* centrado vertical */
+  background: radial-gradient(circle at top, #0f172a, #020617);
   font-family: 'Inter', sans-serif;
   padding: 20px;
 }
 
 /* =============================== */
-/* TARJETA PRINCIPAL               */
+/* TARJETA PRINCIPAL FLUIDA        */
 /* =============================== */
 .tarjeta-mesa {
-  width: 430px;
-  padding: 40px;
+  width: clamp(320px, 70%, 430px);
+  margin: 0 auto;
+  padding: clamp(28px, 5%, 40px);
   border-radius: 18px;
   background: rgba(15,23,42,0.9);
   text-align: center;
   border: 1px solid rgba(59,130,246,0.15);
 
-  /* 🌑 Glow oscuro base */
+  /* 🌑 Glow oscuro base + neon azul intenso */
   box-shadow:
     0 0 40px rgba(0,0,0,0.6),
-
-    /* ✨ Difuminado blanco ambiental */
-    0 0 80px rgba(255,255,255,0.06),
-
-    /* ✨ Halo superior elegante */
+    0 0 80px rgba(59,130,246,0.2),
+    0 0 120px rgba(96,165,250,0.25),
     0 -10px 60px rgba(255,255,255,0.05);
 
   position: relative;
   overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-/* ✨ Capa de luz difusa suave */
+/* ✨ Capa de luz difusa NEON */
 .tarjeta-mesa::before {
   content: "";
   position: absolute;
@@ -44,16 +60,22 @@
   left: -20%;
   width: 140%;
   height: 140%;
-  background: radial-gradient(circle, rgba(255,255,255,0.12), transparent 60%);
-  opacity: 0.15;
+  background: radial-gradient(
+    circle, 
+    rgba(96,165,250,0.25),  /* azul neon */
+    rgba(59,130,246,0.15) 40%, 
+    transparent 70%
+  );
+  opacity: 0.35;  /* más intenso */
   pointer-events: none;
+  filter: blur(50px); /* difuminado más grande */
 }
 
 /* =============================== */
 /* LOGO                            */
 /* =============================== */
 .logo {
-  font-size: 46px;
+  font-size: clamp(36px, 8vw, 46px);
   margin-bottom: 6px;
   text-shadow: 0 0 15px rgba(59,130,246,0.5);
 }
@@ -160,5 +182,14 @@ button:disabled {
 
   textarea {
     min-height: 110px;
+  }
+}
+
+/* =============================== */
+/* DESKTOP MÁS PEQUEÑO              */
+/* =============================== */
+@media (min-width: 1200px) {
+  .tarjeta-mesa {
+    transform: scale(0.75); /* 25% más pequeña */
   }
 }
