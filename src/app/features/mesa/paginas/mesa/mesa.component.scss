@@ -190,13 +190,18 @@ button:disabled {
 /* =============================== */
 @media (min-width: 1200px) {
   .tarjeta-mesa {
-    transform: scale(1.5); /* 25% más pequeña */
+    transform: scale(1.1); /* 25% más pequeña */
   }
 }
 
 @media (max-width: 300px) {
-  .tarjeta-mesa {
-   transform: scale(0.75);
+   .tarjeta-mesa {
+    width: 80%;
+    padding: 18px;
+  }
+
+  textarea {
+    min-height: 110px;
   }
 
   
