@@ -62,14 +62,13 @@ body {
   height: 140%;
   background: radial-gradient(
     circle, 
-    rgba(96,165,250,0.25),
+    rgba(96,165,250,0.25),  /* azul neon */
     rgba(59,130,246,0.15) 40%, 
     transparent 70%
   );
-  opacity: 0.35;
+  opacity: 0.35;  /* más intenso */
   pointer-events: none;
-  filter: blur(50px);
-  transition: all 0.3s ease;
+  filter: blur(50px); /* difuminado más grande */
 }
 
 /* =============================== */
@@ -173,17 +172,12 @@ button:disabled {
 }
 
 /* =============================== */
-/* RESPONSIVE MÓVIL                */
+/* RESPONSIVE                      */
 /* =============================== */
 @media (max-width: 500px) {
   .tarjeta-mesa {
     width: 100%;
     padding: 28px;
-  }
-
-  .tarjeta-mesa::before {
-    opacity: 0.6;       /* glow más visible en móviles */
-    filter: blur(80px); /* difuminado más grande */
   }
 
   textarea {
@@ -196,6 +190,14 @@ button:disabled {
 /* =============================== */
 @media (min-width: 1200px) {
   .tarjeta-mesa {
-    transform: scale(0.75); /* 25% más pequeña */
+    transform: scale(1.5); /* 25% más pequeña */
   }
+}
+
+@media (max-width: 300px) {
+  .tarjeta-mesa {
+   transform: scale(0.75);
+  }
+
+  
 }
