@@ -1,34 +1,41 @@
 <!-- Contenedor global centrado -->
-<div class="contenedorPrincipal"*ngIf="activarBoolService.activarpantalla$ | async">
+<div class="mesa-page" *ngIf="activarBoolService.activarpantalla$ | async">
 
   <!-- Tarjeta principal -->
-  <div class="contenedoSecundario">
+  <div class="tarjeta-mesa">
 
-    <!-- Título del bar -->
-    <h2 class="titulo-bar">
-      MusicBares
-    </h2>
+    <!-- Icono musical -->
+    <div class="logo">🎵</div>
+
+    <!-- Título -->
+    <h2 class="titulo-bar">MusicBares</h2>
+
+    <!-- Subtítulo -->
+    <p class="subtitulo">Pide tu música sin levantarte</p>
 
     <!-- Texto de ayuda -->
     <p class="texto-ayuda">
       Pega uno o varios links de YouTube (uno por línea)
     </p>
 
-    <!-- Textarea donde se pegan los links -->
+    <!-- Label -->
+    <label class="label-links">🔗 Links de canciones</label>
+
+    <!-- Textarea -->
     <textarea 
       [(ngModel)]="linksTexto"
       placeholder="https://youtube.com/...
 https://youtu.be/...">
     </textarea>
 
-    <!-- Botón de envío -->
+    <!-- Botón -->
     <button 
       (click)="enviarLinks()" 
       [disabled]="enviando">
       {{ enviando ? 'Enviando...' : 'Enviar canciones' }}
     </button>
 
-    <!-- Mensaje visual -->
+    <!-- Mensaje -->
     <p class="mensaje" *ngIf="mensaje">
       {{ mensaje }}
     </p>
