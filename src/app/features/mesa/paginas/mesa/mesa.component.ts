@@ -53,10 +53,10 @@ pantallaPanel: boolean = true;
   // ============================
  enviarLinks() {
   // 🔹 Chequeo de sesión antes de enviar
-  if (this.authService.estaAutenticado()) {
-    this.mensaje = '❌ Debes iniciar sesión para enviar canciones';
-    return;
-  }
+  // if (this.authService.estaAutenticado()) {
+  //   this.mensaje = '❌ Debes iniciar sesión para enviar canciones';
+  //   return;
+  // }
 
   // Si no hay código de mesa, no hacemos nada
   if (!this.codigoMesa) {

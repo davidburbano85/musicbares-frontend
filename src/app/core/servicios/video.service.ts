@@ -80,9 +80,9 @@ export class VideoService {
  registrarVideosMesa(codigoMesa: string, links: string[]): Observable<any> {
 
   // 🔹 Chequeo de sesión antes de enviar
-  if (!this.authService.estaAutenticado()) {
-    return throwError(() => new Error('Usuario no autenticado, no se puede enviar canciones'));
-  }
+  // if (!this.authService.estaAutenticado()) {
+  //   return throwError(() => new Error('Usuario no autenticado, no se puede enviar canciones'));
+  // }
 
   const body = { codigoMesa, links };
   return this.http.post(`${this.apiUrl}/registrar-multiples`, body);
