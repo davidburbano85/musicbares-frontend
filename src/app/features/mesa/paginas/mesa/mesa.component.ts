@@ -53,7 +53,7 @@ pantallaPanel: boolean = true;
   // ============================
  enviarLinks() {
   // 🔹 Chequeo de sesión antes de enviar
-  if (!this.authService.estaAutenticado()) {
+  if (this.authService.estaAutenticado()) {
     this.mensaje = '❌ Debes iniciar sesión para enviar canciones';
     return;
   }

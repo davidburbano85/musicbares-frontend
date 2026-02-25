@@ -70,7 +70,7 @@ export class PanelComponent implements OnInit {
     const email = localStorage.getItem('usuarioEmail');
     if (!email) return;
 
-    // 🔹 1. Cargar usuario real (ESTO ES LO QUE FALTABA)
+    // 🔹 1. Cargar usuario real 
     this.authService.cargarUsuarioRealPorEmail(email).subscribe({
       next: usuario => {
         console.log('[PANEL] Usuario cargado correctamente:', usuario);
