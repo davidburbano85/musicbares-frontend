@@ -1,10 +1,14 @@
 <!-- Contenedor general oscuro -->
 <div class="contenedor-app">
+<H1>MusicBares <h2>Registrar</h2></H1>
+<br>
+<br>
 
+<br>
   <!-- Tarjeta reutilizable del sistema -->
   <div class="tarjeta">
 
-    <h2>Crear cuenta</h2>
+    <h3>Crear cuenta</h3>
 
     <!-- Formulario reactivo -->
     <form [formGroup]="formularioRegistro" (ngSubmit)="registrar()">
@@ -12,13 +16,13 @@
       <!-- Campo correo -->
       <div class="grupo-campo">
         <label>Correo electrónico</label>
-        <input type="email" formControlName="correo" placeholder="correo electronico ">
+        <input type="email" formControlName="correo" placeholder="E-mail ">
       </div>
 
       <!-- Campo contraseña -->
       <div class="grupo-campo">
         <label>Contraseña</label>
-        <input type="password" formControlName="clave" placeholder="contraseña minimo 8 digitos">
+        <input type="password" formControlName="clave" placeholder="contraseña ">
       </div>
 
       <!-- Botón -->

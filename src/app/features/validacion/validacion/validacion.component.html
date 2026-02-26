@@ -1,0 +1,19 @@
+<div class=" contain">
+    <div *ngIf="!iniciarSesi" class="containerVAlidacion">
+
+        <h1>MusicBares</h1>
+        <br>
+        <br>
+        <h2>Validacion de Cuenta: {{email}} </h2>
+        <div class="inputs">
+
+            <input type="password" maxlength="4" pattern="\d{4}" placeholder="____1" class="Validar" #primerBoque />
+            <input type="password" maxlength="4" pattern="\d{4}" placeholder="____2" class="Validar" />
+            <input type="password" maxlength="4" pattern="\d{4}" placeholder="____3" class="Validar" #segundoBloque />
+            <button (click)="validarInicio(+primerBoque.value, +segundoBloque.value)" class="Validar">Validar </button>
+
+        </div>
+    </div>
+</div>
+<br>
+<br>

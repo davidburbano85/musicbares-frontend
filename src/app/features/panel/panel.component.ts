@@ -32,36 +32,7 @@ export class PanelComponent implements OnInit {
     private barService: BarService
   ) { }
 
-  // ngOnInit(): void {
-  //   const email = localStorage.getItem('usuarioEmail');
-  //   if (!email) {
-  //     console.warn('[PANEL] No hay email en localStorage');
-  //     return;
-  //   }
 
-  //   // 🔹 Cargamos el bar asociado al correo
-  //   this.authService.cargarBarPorCorreo(email).subscribe({
-  //     next: bar => {
-  //       if (!bar || !bar.idBar) {
-  //         console.warn('[PANEL] Usuario sin bar asignado');
-  //         return;
-  //       }
-
-  //       // 🔹 Guardamos idBar en componente
-  //       this.idBar = bar.idBar;
-  //       console.log('[PANEL] Bar recibido:', bar);
-
-  //       // 🔹 Guardamos idBar en localStorage para otras partes
-  //       localStorage.setItem('idBar', bar.idBar.toString());
-
-  //       // 🔹 Ahora podemos cargar la cola de videos
-  //       this.cargarColaConTitulos(this.idBar);
-  //     },
-  //     error: err => console.error('[PANEL] Error cargando bar:', err)
-  //   });
-
-
-  // }
   ngOnInit(): void {
     // Si el usuario no tiene bar cargado → mostrar formulario
     if (!this.authService.barUsuario) {
@@ -84,6 +55,10 @@ export class PanelComponent implements OnInit {
         if (!bar || !bar.idBar) return;
 
         this.idBar = bar.idBar;
+        if (bar && bar.idBar) {
+          localStorage.setItem('idBar', bar.idBar.toString());
+          this.titulo = `Panel de Administración de: ${bar.nombreBar}`;
+        }
 
         this.cargarColaConTitulos(this.idBar);
 
@@ -259,8 +234,8 @@ export class PanelComponent implements OnInit {
         });
       },
     });
-        alert('Eliminado correctamente');
-    
+    alert('Eliminado correctamente');
+
   }
 
   // ======================================================
@@ -268,9 +243,9 @@ export class PanelComponent implements OnInit {
   // ======================================================
   crearMesaForm(numeroMesa: number, codigoQR: string): void {
     console.log('[Panel] crearMesaForm:', numeroMesa, codigoQR);
-    alert(`la mesa: ${codigoQR} fue creada exitosamente` );
+    alert(`la mesa: ${codigoQR} fue creada exitosamente`);
     this.mesaService.crearMesa(numeroMesa, codigoQR).subscribe({
-      next: () => console.log('[Panel] Mesa creada correctamente'),    
+      next: () => console.log('[Panel] Mesa creada correctamente'),
       error: err => console.error('[Panel] Error creando mesa:', err)
     });
   }
@@ -285,7 +260,7 @@ export class PanelComponent implements OnInit {
       next: () => console.log('[Panel] Mesa actualizada'),
       error: err => console.error('[Panel] Error actualizando mesa:', err)
     });
-    
+
   }
 
   // ======================================================
@@ -321,13 +296,14 @@ export class PanelComponent implements OnInit {
 
     const url = `https://musicbares-backend.onrender.com/api/usuario/${correo}`;
     const body = { correoElectronico: correo, nombreCompleto };
-alert
+    alert
     this.http.put(url, body, { headers }).subscribe({
-      next: resp =>{ console.log('[Panel] Usuario actualizado correctamente', resp);
-        alert(`Nombre de usuario actualizado correctamente como: ${nombreCompleto}`) 
+      next: resp => {
+        console.log('[Panel] Usuario actualizado correctamente', resp);
+        alert(`Nombre de usuario actualizado correctamente como: ${nombreCompleto}`)
       },
       error: err => console.error('[Panel] ERROR actualizando usuario', err)
-      
+
     });
   }
 
@@ -397,7 +373,8 @@ alert
     const body = { idBar, nombreBar: nombre, direccion };
 
     this.http.put(urlPut, body, { headers }).subscribe({
-      next: resp =>{ console.log('[Panel] Bar actualizado correctamente', resp);
+      next: resp => {
+        console.log('[Panel] Bar actualizado correctamente', resp);
         alert(`Bar actualizado correctamente\nNuevo nombre: ${nombre}.\nNueva direccion: ${direccion}`)
       },
       error: err => console.error('[Panel] ERROR actualizando bar', err)
@@ -434,39 +411,39 @@ alert
   abrirReproductor() {
     window.open('/reproductor', '_blank');
   }
- crearBarForm(nombreBarInput: HTMLInputElement, direccionInput: HTMLInputElement) {
+  crearBarForm(nombreBarInput: HTMLInputElement, direccionInput: HTMLInputElement) {
 
-  const nombreBar = nombreBarInput.value;
-  const direccion = direccionInput.value;
+    const nombreBar = nombreBarInput.value;
+    const direccion = direccionInput.value;
 
-  if (!nombreBar || !direccion) {
-    console.warn('[Panel] Datos de bar incompletos');
-    return;
+    if (!nombreBar || !direccion) {
+      console.warn('[Panel] Datos de bar incompletos');
+      return;
+    }
+
+    const dto = { nombreBar, direccion };
+
+    this.barService.crearBar(dto).subscribe({
+      next: () => {
+
+        console.log('[Panel] Bar creado correctamente');
+
+        // 🧹 LIMPIAR INPUTS
+        nombreBarInput.value = '';
+        direccionInput.value = '';
+
+        // ocultar formulario
+        this.mostrarFormularioBar = false;
+
+        // recargar bar
+        if (this.authService.usuarioReal?.idUsuario) {
+          this.authService
+            .cargarBarPorUsuario(this.authService.usuarioReal.idUsuario)
+            .subscribe();
+        }
+      },
+      error: err => console.error(err)
+    });
   }
-
-  const dto = { nombreBar, direccion };
-
-  this.barService.crearBar(dto).subscribe({
-    next: () => {
-
-      console.log('[Panel] Bar creado correctamente');
-
-      // 🧹 LIMPIAR INPUTS
-      nombreBarInput.value = '';
-      direccionInput.value = '';
-
-      // ocultar formulario
-      this.mostrarFormularioBar = false;
-
-      // recargar bar
-      if (this.authService.usuarioReal?.idUsuario) {
-        this.authService
-          .cargarBarPorUsuario(this.authService.usuarioReal.idUsuario)
-          .subscribe();
-      }
-    },
-    error: err => console.error(err)
-  });
-}
 }
 

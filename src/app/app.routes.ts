@@ -11,6 +11,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 // Importamos nuestro guard de autenticación
 
 import { ReproductorComponent } from './features/player/paginas/reproductor/reproductor.component';
+import { ValidacionComponent } from './features/validacion/validacion/validacion.component';
 
 // Definimos el arreglo de rutas principales
 export const routes: Routes = [
@@ -25,6 +26,10 @@ export const routes: Routes = [
   {
     path: 'reproductor',
     component:ReproductorComponent
+  },
+  {
+    path:'validacion',
+    component: ValidacionComponent
   },
 
   {

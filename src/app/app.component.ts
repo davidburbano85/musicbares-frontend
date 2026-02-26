@@ -1,3 +1,4 @@
+import { PanelComponent } from './features/panel/panel.component';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
@@ -42,7 +43,7 @@ export class AppComponent implements OnInit {
           document.title = `MusicBares - ${bar.nombreBar}`;
 
         } else {
-          console.warn('[DEBUG APP] Usuario sin bar asignado → título genérico');
+          
           document.title = 'MusicBares';
         }
       },
