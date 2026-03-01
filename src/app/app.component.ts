@@ -40,18 +40,18 @@ export class AppComponent implements OnInit {
           localStorage.setItem('idBar', bar.idBar.toString());
 
           // 🔹 Actualizamos título con el nombre del bar
-          document.title = `MusicBares - ${bar.nombreBar}`;
+          document.title = `Music Bars - ${bar.nombreBar}`;
 
         } else {
           
-          document.title = 'MusicBares';
+          document.title = 'Music Bars';
         }
       },
 
       // 🔴 Error cargando bar
       error: err => {
         console.error('[DEBUG APP] Error cargando bar por correo:', err);
-        document.title = 'MusicBares';
+        document.title = 'Music Bars';
       }
     });
   }
